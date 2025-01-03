@@ -11,7 +11,7 @@ static void free_and_null(void **ptr)
 
 static void exit_with_error(char *message)
 {
-    ft_putendl_fd(message, 2);
+    
     exit(EXIT_FAILURE);
 }
 

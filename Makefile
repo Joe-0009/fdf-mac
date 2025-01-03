@@ -1,33 +1,39 @@
 NAME = fdf
 CC = cc
-CFLAGS = -Os -Ofast -Wall -Wextra -Werror
-MLX_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit
+CFLAGS = -Wall -Wextra -Werror
+FRAMEWORKS = -framework OpenGL -framework AppKit
+MLX = libmlx.a
 
-SRCS = fdf_initialization.c \
-    fdf_utils.c \
-    fdf_events.c \
-    fdf_drawing.c \
-    fdf_transform.c \
-    fdf_map.c \
-    main.c \
-    get_next_line/get_next_line.c \
-    get_next_line/get_next_line_utils.c
+SRCS = main.c \
+       fdf_events.c \
+       fdf_file_utils.c \
+       fdf_height.c \
+       fdf_init.c \
+       fdf_draw.c \
+       fdf_line.c \
+       fdf_pixel.c \
+       fdf_points.c \
+       fdf_transform.c \
+       fdf_utils.c \
+       ft_split.c \
+       get_next_line/get_next_line.c \
+       get_next_line/get_next_line_utils.c
 
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-%.o: %.c
-    $(CC) $(CFLAGS) -Imlx -c $< -o $@
-
 $(NAME): $(OBJS)
-    $(CC) $(CFLAGS) $(OBJS) libmlx.a $(MLX_FLAGS) -o $@
+    $(CC) $(OBJS) $(MLX) $(FRAMEWORKS) -o $(NAME)
+
+%.o: %.c
+    $(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-    @rm -f $(OBJS)
+    rm -f $(OBJS)
 
 fclean: clean
-    @rm -f $(NAME)
+    rm -f $(NAME)
 
 re: fclean all
 

@@ -9,9 +9,10 @@ static void create_point(t_point *point, char **color_split, t_map *map,
     point->x = j * map->scale.base;
     point->y = i * map->scale.base;
     point->z = height * map->scale.z_scale;
-    point->color = color_split[1] ?
-                  (int)strtol(color_split[1], NULL, 16) :
-                  calculate_color(height, &map->height);
+    if (color_split[1]) 
+        point->color = (int)strtol(color_split[1], NULL, 16);
+    else 
+        point->color = calculate_color(height, &map->height);
 }
 
 void    parse_map(t_point **points, char *file_name, t_map *map)
@@ -59,7 +60,7 @@ t_point **points_init(t_map *map)
 
     points = malloc(map->dim.height * sizeof(t_point *));
     if (!points)
-        exit_with_error("Memory allocation failed");
+        exit(0);
     i = 0;
     while (i < map->dim.height)
     {
@@ -69,7 +70,7 @@ t_point **points_init(t_map *map)
             while (--i >= 0)
                 free(points[i]);
             free(points);
-            exit_with_error("Memory allocation failed");
+            exit(0);
         }
         i++;
     }

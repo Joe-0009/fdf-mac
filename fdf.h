@@ -1,7 +1,7 @@
 #ifndef FDF_H
 # define FDF_H
 
-# include "fdf_structs.h"
+
 # include "get_next_line/get_next_line.h"
 # include "minilibx/mlx.h"
 # include <fcntl.h>
@@ -77,15 +77,20 @@ typedef struct s_vars
 # define ERR_WIN_CREATE "Error creating window"
 # define ERR_IMG_CREATE "Error creating image"
 
+
+
 void    cleanup_mlx(t_vars *vars);
 void    cleanup_window(t_vars *vars);
 void    handle_init_error(char *message, t_vars *vars);
+void    init_fdf(t_vars *vars);
+void    create_image(t_vars *vars);
 
 // File operations
 void        ft_free_strs(char **strs);
 t_map       map_dimension(char *file_name);
 
 // Height processing
+int calculate_color(int height, t_height_range *range);
 void        calculate_scale(t_map *map);
 void        find_height_range(char *file_name, t_map *map);
 

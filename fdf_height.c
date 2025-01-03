@@ -9,7 +9,7 @@ static void process_height(char *str, t_height_range *height)
         height->min = current_height;
     if (current_height > height->max)
         height->max = current_height;
-}
+} 
 
 void    find_height_range(char *file_name, t_map *map)
 {
@@ -36,7 +36,7 @@ void    find_height_range(char *file_name, t_map *map)
     close(fd);
 }
 
-static int calculate_color(int height, t_height_range *range)
+int calculate_color(int height, t_height_range *range)
 {
     float height_percent;
 
