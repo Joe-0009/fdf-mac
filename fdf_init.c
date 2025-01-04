@@ -1,4 +1,4 @@
-#include "fdf_init.h"
+#include "fdf.h"
 
 static void    cleanup_mlx(t_vars *vars)
 {
@@ -19,9 +19,8 @@ static void    cleanup_window(t_vars *vars)
     cleanup_mlx(vars);
 }
 
-static void    handle_init_error(char *message, t_vars *vars)
+static void    handle_init_error(void)
 {
-    fprintf(stderr, "%s\n", message);
     exit(EXIT_FAILURE);
 }
 
@@ -29,13 +28,13 @@ void    init_fdf(t_vars *vars)
 {
     vars->mlx = mlx_init();
     if (!vars->mlx)
-        handle_init_error(ERR_MLX_INIT, vars);
+        handle_init_error();
 
     vars->win = mlx_new_window(vars->mlx, WIDTH, HEIGHT, vars->window_name);
     if (!vars->win)
     {
         cleanup_mlx(vars);
-        handle_init_error(ERR_WIN_CREATE, vars);
+        handle_init_error();
     }
 }
 
@@ -45,7 +44,7 @@ void    create_image(t_vars *vars)
     if (!vars->img.img)
     {
         cleanup_window(vars);
-        handle_init_error(ERR_IMG_CREATE, vars);
+        handle_init_error();
     }
 
     vars->img.addr = mlx_get_data_addr(vars->img.img,
@@ -56,6 +55,6 @@ void    create_image(t_vars *vars)
     {
         mlx_destroy_image(vars->mlx, vars->img.img);
         cleanup_window(vars);
-        handle_init_error("Error getting image data address", vars);
+        handle_init_error();
     }
 }

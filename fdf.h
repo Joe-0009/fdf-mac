@@ -79,9 +79,6 @@ typedef struct s_vars
 
 
 
-void    cleanup_mlx(t_vars *vars);
-void    cleanup_window(t_vars *vars);
-void    handle_init_error(char *message, t_vars *vars);
 void    init_fdf(t_vars *vars);
 void    create_image(t_vars *vars);
 

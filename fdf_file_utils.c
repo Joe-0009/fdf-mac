@@ -1,19 +1,8 @@
 #include "fdf.h"
 
-static void free_and_null(void **ptr)
-{
-    if (*ptr)
-    {
-        free(*ptr);
-        *ptr = NULL;
-    }
-}
 
-static void exit_with_error(char *message)
-{
-    
-    exit(EXIT_FAILURE);
-}
+
+
 
 static int  open_map_file(char *file_name)
 {
@@ -21,18 +10,8 @@ static int  open_map_file(char *file_name)
 
     fd = open(file_name, O_RDONLY);
     if (fd < 0)
-        exit_with_error("Failed to open file");
+        exit(0);
     return (fd);
-}
-
-void    ft_free_strs(char **strs)
-{
-    int i;
-
-    i = 0;
-    while (strs[i])
-        free(strs[i++]);
-    free(strs);
 }
 
 t_map   map_dimension(char *file_name)
