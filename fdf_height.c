@@ -47,6 +47,27 @@ int calculate_color(int height, t_height_range *range)
     return (0xFFFFFF - (int)(height_percent * 0x00FFFF));
 }
 
+// Calculate the height factor based on map dimensions and height range
+float   calculate_height_factor(t_map *map)
+{
+    float   height_range;
+    float   height_factor;
+
+    height_range = map->height.max - map->height.min;
+    if (height_range <= 0)
+        return (1.0);
+    
+    if (height_range > map->dim.width)
+        height_factor = (float)map->dim.width / height_range;
+    else if (height_range < map->dim.width / 4)
+        height_factor = 2.0;
+    else
+        height_factor = 1.0;
+    
+    return (height_factor);
+}
+
+// Calculate the final scaling factors
 void    calculate_scale(t_map *map)
 {
     float   max_projected_width;
@@ -57,21 +78,16 @@ void    calculate_scale(t_map *map)
 
     max_projected_width = map->dim.width + map->dim.height;
     height_range = map->height.max - map->height.min;
-    if (height_range > 0)
-    {
-        if (height_range > map->dim.width)
-            height_factor = (float)map->dim.width / height_range;
-        else if (height_range < map->dim.width / 4)
-            height_factor = 2.0;
-        else
-            height_factor = 1.0;
-    }
-    else
-        height_factor = 1.0;
-    scale_x = WIDTH / (max_projected_width * 2);
-    scale_y = HEIGHT / ((max_projected_width * sin(0.523599)) +
-             (height_range * height_factor));
+    height_factor = calculate_height_factor(map);
+    
+    // Increase the base scale for bigger visualization
+    scale_x = (WIDTH / (max_projected_width * 1.5)); // Reduced division factor for bigger scale
+    scale_y = (HEIGHT / ((max_projected_width * sin(0.523599)) + 
+             (height_range * height_factor)));
+    
+    // Set the final scaling factors
     map->scale.base = (scale_x < scale_y) ? scale_x : scale_y;
+    map->scale.base *= 1.1; // Increase overall scale
     map->scale.z_scale = map->scale.base * height_factor;
-    map->scale.iso_angle = 0.523599;
+    map->scale.iso_angle = 0.523599; // 30 degrees in radians
 }

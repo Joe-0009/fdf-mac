@@ -1,37 +1,45 @@
 #include "fdf.h"
 
+void    find_map_boundaries(t_point **points, t_map *map, t_bounds *bounds)
+{
+    int i;
+    int j;
+
+    bounds->min_x = INT_MAX;
+    bounds->max_x = INT_MIN;
+    bounds->min_y = INT_MAX;
+    bounds->max_y = INT_MIN;
+    i = 0;
+    while (i < map->dim.height)
+    {
+        j = 0;
+        while (j < map->dim.width)
+        {
+            if (points[i][j].x < bounds->min_x)
+                bounds->min_x = points[i][j].x;
+            if (points[i][j].x > bounds->max_x)
+                bounds->max_x = points[i][j].x;
+            if (points[i][j].y < bounds->min_y)
+                bounds->min_y = points[i][j].y;
+            if (points[i][j].y > bounds->max_y)
+                bounds->max_y = points[i][j].y;
+            j++;
+        }
+        i++;
+    }
+}
 void    iso_point(t_point *a, t_map *map)
 {
     int prev_x;
     int prev_y;
-    static t_bounds bounds = {INT_MAX, INT_MIN, INT_MAX, INT_MIN};  // Track boundaries
-    
+
     prev_x = a->x;
     prev_y = a->y;
-    
-    // Calculate isometric projection
     a->x = (prev_x - prev_y) * cos(map->scale.iso_angle);
     a->y = -a->z + (prev_x + prev_y) * sin(map->scale.iso_angle);
-    
-    // Track min and max before centering
-    if (a->x < bounds.min_x) bounds.min_x = a->x;
-    if (a->x > bounds.max_x) bounds.max_x = a->x;
-    if (a->y < bounds.min_y) bounds.min_y = a->y;
-    if (a->y > bounds.max_y) bounds.max_y = a->y;
-    
-    // Debug print for first and last points
-    printf("Point at (%d,%d) projected to (%d,%d)\n", prev_x, prev_y, a->x, a->y);
-    printf("Current bounds: x[%d,%d] y[%d,%d]\n", bounds.min_x, bounds.max_x, bounds.min_y, bounds.max_y);
-    
-    // Calculate center offset based on actual width
-    int map_width = bounds.max_x - bounds.min_x;
-    int center_offset_x = (WIDTH - map_width) / 2;
-    
-    a->x += center_offset_x;
-    a->y += HEIGHT / 2;
 }
 
-void    iso_points(t_point **points, t_map *map)
+void    apply_iso_projection(t_point **points, t_map *map)
 {
     int i;
     int j;
@@ -47,4 +55,33 @@ void    iso_points(t_point **points, t_map *map)
         }
         i++;
     }
+}
+
+void    center_map(t_point **points, t_map *map)
+{
+    int i;
+    int j;
+    t_bounds bounds;
+
+    find_map_boundaries(points, map, &bounds);
+    int center_x = (WIDTH - (bounds.max_x - bounds.min_x)) / 2;
+    int center_y = (HEIGHT - (bounds.max_y - bounds.min_y)) / 2;
+    i = 0;
+    while (i < map->dim.height)
+    {
+        j = 0;
+        while (j < map->dim.width)
+        {
+            points[i][j].x += center_x - bounds.min_x;
+            points[i][j].y += center_y - bounds.min_y;
+            j++;
+        }
+        i++;
+    }
+}
+
+void    iso_points(t_point **points, t_map *map)
+{
+    apply_iso_projection(points, map);
+    center_map(points, map);
 }

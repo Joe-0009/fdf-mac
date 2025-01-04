@@ -12,7 +12,6 @@ SRCS = main.c \
        fdf_draw.c \
        fdf_line.c \
        fdf_pixel.c \
-       fdf_points.c \
        fdf_transform.c \
        fdf_utils.c \
        ft_split.c \
