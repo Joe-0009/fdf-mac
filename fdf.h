@@ -71,6 +71,12 @@ typedef struct s_vars
     t_image img;
 }   t_vars;
 
+typedef struct s_bounds {
+    int min_x;
+    int max_x;
+    int min_y;
+    int max_y;
+} t_bounds;
 
 
 # define ERR_MLX_INIT "Error initializing mlx"
