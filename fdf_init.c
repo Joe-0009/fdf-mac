@@ -28,6 +28,8 @@ void	cleanup_image(t_vars *vars)
 		mlx_destroy_image(vars->mlx, vars->img->img);
 		vars->img->img = NULL;
 		vars->img->addr = NULL;
+		free(vars->img);
+		vars->img = NULL;
 	}
 }
 

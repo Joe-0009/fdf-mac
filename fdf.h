@@ -41,6 +41,8 @@ typedef struct s_offset
 {
 	int				x;
 	int				y;
+	int				offset_x;
+	int				offset_y;
 }					t_offset;
 
 typedef struct s_height_range
@@ -125,7 +127,7 @@ void				free_points(int map_height, t_point **points);
 t_point				**points_init(t_map *map);
 
 // Transformation
-void	move_map(t_point **points, t_map *map, int offset);
+void	move_map(t_point **points, t_map *map, int new_offset_x, int new_offset_y);
 void				iso_point(t_point *a, t_map *map);
 void	iso_points(t_vars *vars);
 

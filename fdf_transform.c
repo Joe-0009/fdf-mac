@@ -70,23 +70,25 @@ void	apply_iso_projection(t_point **points, t_map *map)
 	}
 }
 
-void	move_map(t_point **points, t_map *map, int offset)
+void	move_map(t_point **points, t_map *map, int new_offset_x, int new_offset_y)
 {
 	int			i;
 	int			j;
 	t_bounds	bounds;
 
+	map->center.offset_x += new_offset_x;
+    map->center.offset_y += new_offset_y;
 	find_map_boundaries(points, map, &bounds);
 	map->center.x = (WIDTH - (bounds.max_x - bounds.min_x)) / 2 ;
-	map->center.x = (HEIGHT - (bounds.max_y - bounds.min_y)) / 2 ;
+	map->center.y = (HEIGHT - (bounds.max_y - bounds.min_y)) / 2 ;
 	i = 0;
 	while (i < map->dim.height)
 	{
 		j = 0;
 		while (j < map->dim.width)
 		{
-			points[i][j].x += map->center.x - bounds.min_x + offset;
-			points[i][j].y += map->center.y - bounds.min_y + offset;
+			points[i][j].x += map->center.x - bounds.min_x + map->center.offset_x;
+			points[i][j].y += map->center.y - bounds.min_y + map->center.offset_y;
 			j++;
 		}
 		i++;
@@ -96,5 +98,7 @@ void	move_map(t_point **points, t_map *map, int offset)
 void	iso_points(t_vars *vars)
 {
 	apply_iso_projection(vars->points, vars->map);
-	move_map(vars->points, vars->map, 0);
+	vars->map->center.offset_x = 0;
+    vars->map->center.offset_y = 0;
+	move_map(vars->points, vars->map, 0, 0);
 }

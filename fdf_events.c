@@ -22,7 +22,7 @@ int	close_window_x(t_vars *vars)
 }
 int	close_window_esc(int keycode, t_vars *vars)
 {
-	if (keycode == 65307)
+	if (keycode == 53)
 	{
 		cleanup_image(vars);
 		cleanup_window(vars);
@@ -33,23 +33,36 @@ int	close_window_esc(int keycode, t_vars *vars)
 }
 
 
-int	move_up(int keycode, t_vars *vars)
+int handle_movement(int keycode, t_vars *vars)
 {
-	if (keycode == 126)
+    if (keycode == 126)
+        move_map(vars->points, vars->map, 0,-20);
+    else if (keycode == 125)
+        move_map(vars->points, vars->map, 0,20);
+    else if (keycode == 123)
+        move_map(vars->points, vars->map, -20, 0);
+    else if (keycode == 124)
+        move_map(vars->points, vars->map, 20, 0);
+    else if (keycode == 49)
 	{
-		cleanup_image(vars);
-		create_image(vars);
-		move_map(vars->points, vars->map, 20);
-		main_draw(vars);
-		mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
+		vars->map->center.offset_x = 0;
+        vars->map->center.offset_y = 0;
+        move_map(vars->points, vars->map, 0, 0);
 	}
-	return (0);
+    if ((keycode >= 123 && keycode <= 126 )|| keycode == 49)
+    {
+        cleanup_image(vars);
+        create_image(vars);
+        main_draw(vars);
+        mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
+    }
+    return (0);
 }
 
 int key_handler(int keycode, t_vars *vars)
 {
 	close_window_esc(keycode, vars);
-	move_up(keycode, vars);
+	handle_movement(keycode, vars);
 	return (0);
 }
 
