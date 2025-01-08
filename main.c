@@ -1,52 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yrachidi <yrachidi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/06 14:11:18 by yrachidi          #+#    #+#             */
+/*   Updated: 2025/01/07 18:49:25 by yrachidi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-    t_vars  vars;
-    t_map   map;
-    t_point **points;
+	t_vars	vars;
+	t_map	map;
 
-    if (argc != 2)
-    {
-        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
-        return (1);
-    }
-
-    // Initialize map dimensions
-    map = map_dimension(argv[1]);
-    
-    // Initialize points array
-    points = points_init(&map);
-    
-    // Parse map data
-    parse_map(points, argv[1], &map);
-    
-    // Apply isometric transformation
-    iso_points(points, &map);
-    
-    // Set up window name
-    vars.window_name = "FDF";
-    
-    // Initialize MLX
-    init_fdf(&vars);
-    
-    // Create image
-    create_image(&vars);
-    
-    // Draw the map
-    main_draw(&vars, points, &map);
-    
-    // Put image to window
-    mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
-    
-    // Set up hooks
-    mlx_hooks(&vars, argv[1]);
-    
-    // Start MLX loop
-    mlx_loop(vars.mlx);
-    
-    // Cleanup
-    free_points(&map, points);
-    
-    return (0);
+	if (argc != 2)
+	{
+		fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+		return (1);
+	}
+	map = map_dimension(argv[1]);
+	vars.map =  &map;
+	vars.points = points_init(vars.map);
+	parse_map(vars.points, argv[1], vars.map);
+	iso_points(&vars);
+	vars.window_name = argv[1];
+	init_fdf(&vars);
+	create_image(&vars);
+	main_draw(&vars);
+	mlx_put_image_to_window(vars.mlx, vars.win, vars.img->img, 0, 0);
+	vars.dim.height = map.dim.height;
+	mlx_hooks(&vars, argv[1]);
+	mlx_loop(vars.mlx);
+	cleanup_window(&vars);
+	free_points(vars.dim.height, vars. points);
+	return (0);
 }

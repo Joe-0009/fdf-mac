@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yrachidi <yrachidi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/06 14:11:30 by yrachidi          #+#    #+#             */
+/*   Updated: 2025/01/07 15:44:38 by yrachidi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 int	ft_words_count(char const *s, char c)
@@ -49,6 +61,8 @@ void	ft_free_strs(char **strs)
 {
 	int	i;
 
+	if (!strs)
+		return ;
 	i = 0;
 	while (strs[i] != NULL)
 	{
