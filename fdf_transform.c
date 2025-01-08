@@ -87,18 +87,36 @@ void	move_map(t_point **points, t_map *map, int new_offset_x, int new_offset_y)
 		j = 0;
 		while (j < map->dim.width)
 		{
-			points[i][j].x += map->center.x - bounds.min_x + map->center.offset_x;
-			points[i][j].y += map->center.y - bounds.min_y + map->center.offset_y;
+			points[i][j].x += (map->center.x - bounds.min_x + map->center.offset_x);
+			points[i][j].y += (map->center.y - bounds.min_y + map->center.offset_y);
 			j++;
 		}
 		i++;
 	}
 }
 
-void	iso_points(t_vars *vars)
+
+void    update_zoom(t_vars *vars, float zoom_delta)
 {
-	apply_iso_projection(vars->points, vars->map);
-	vars->map->center.offset_x = 0;
-    vars->map->center.offset_y = 0;
-	move_map(vars->points, vars->map, 0, 0);
+    vars->map->scale.zoom_factor *= zoom_delta;
+    
+    if (vars->map->scale.zoom_factor < 0.1)
+        vars->map->scale.zoom_factor = 0.1;
+    if (vars->map->scale.zoom_factor > 10.0)
+        vars->map->scale.zoom_factor = 10.0;
+    calculate_scale(vars->map);
+    parse_map(vars->points, vars->window_name, vars->map);
+    apply_iso_projection(vars->points, vars->map);
+    move_map(vars->points, vars->map, vars->map->center.offset_x, vars->map->center.offset_y);
 }
+
+void    iso_points(t_vars *vars)
+{
+    vars->map->scale.zoom_factor = 1.1;
+    vars->map->center.offset_x = 0;
+    vars->map->center.offset_y = 0;
+    apply_iso_projection(vars->points, vars->map);
+    move_map(vars->points, vars->map, 0, 0);
+}
+
+

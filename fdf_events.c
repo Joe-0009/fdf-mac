@@ -45,12 +45,33 @@ int handle_movement(int keycode, t_vars *vars)
         move_map(vars->points, vars->map, 20, 0);
     else if (keycode == 49)
 	{
-		vars->map->center.offset_x = 0;
-        vars->map->center.offset_y = 0;
-        move_map(vars->points, vars->map, 0, 0);
+        vars->map->scale.zoom_factor = 1.1;
+        calculate_scale(vars->map);
+        parse_map(vars->points, vars->window_name, vars->map);
+        iso_points(vars);
 	}
     if ((keycode >= 123 && keycode <= 126 )|| keycode == 49)
     {
+        cleanup_image(vars);
+        create_image(vars);
+        main_draw(vars);
+        mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
+    }
+    return (0);
+}
+int zoom_in_and_out(int keycode, t_vars *vars)
+{
+    if (keycode == 6)
+    {
+        update_zoom(vars, 1.1);
+        cleanup_image(vars);
+        create_image(vars);
+        main_draw(vars);
+        mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
+    }
+    else if (keycode == 31)
+    {
+        update_zoom(vars, 0.9);
         cleanup_image(vars);
         create_image(vars);
         main_draw(vars);
@@ -63,6 +84,7 @@ int key_handler(int keycode, t_vars *vars)
 {
 	close_window_esc(keycode, vars);
 	handle_movement(keycode, vars);
+	zoom_in_and_out(keycode, vars);
 	return (0);
 }
 

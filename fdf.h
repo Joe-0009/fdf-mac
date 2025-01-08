@@ -35,6 +35,7 @@ typedef struct s_scale
 	float			base;
 	float			z_scale;
 	float			iso_angle;
+	float			zoom_factor;
 }					t_scale;
 
 typedef struct s_offset
@@ -130,6 +131,7 @@ t_point				**points_init(t_map *map);
 void	move_map(t_point **points, t_map *map, int new_offset_x, int new_offset_y);
 void				iso_point(t_point *a, t_map *map);
 void	iso_points(t_vars *vars);
+void    update_zoom(t_vars *vars, float zoom_delta);
 
 // Utility functions
 int					ft_words_count(char const *s, char c);
