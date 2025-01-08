@@ -44,17 +44,18 @@ void	cleanup_window(t_vars *vars)
 	cleanup_mlx(vars);
 }
 
-void	init_fdf(t_vars *vars)
+void    init_fdf(t_vars *vars)
 {
-	vars->mlx = mlx_init();
-	if (!vars->mlx)
-		exit(EXIT_FAILURE);
-	vars->win = mlx_new_window(vars->mlx, WIDTH, HEIGHT, vars->window_name);
-	if (!vars->win)
-	{
-		cleanup_mlx(vars);
-		exit(EXIT_FAILURE);
-	}
+    vars->map->scale.zoom_factor = 1.1;
+    vars->map->scale.projection = ISO;
+    calculate_scale(vars->map);
+    parse_map(vars->points, vars->window_name, vars->map);
+    apply_projection(vars->points, vars->map);
+    move_map(vars->points, vars->map, 0, 0);
+    cleanup_image(vars);
+    create_image(vars);
+    main_draw(vars);
+    mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
 }
 
 void	create_image(t_vars *vars)

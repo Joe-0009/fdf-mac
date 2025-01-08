@@ -29,6 +29,13 @@ typedef struct s_dimensions
 	int				width;
 	int				height;
 }					t_dimensions;
+typedef enum e_projection {
+    ISO,
+    PARALLEL_TOP,
+    PARALLEL_FRONT,
+    PARALLEL_SIDE
+} t_projection;
+
 
 typedef struct s_scale
 {
@@ -36,6 +43,7 @@ typedef struct s_scale
 	float			z_scale;
 	float			iso_angle;
 	float			zoom_factor;
+	t_projection    projection; 
 }					t_scale;
 
 typedef struct s_offset
@@ -116,6 +124,13 @@ void				create_image(t_vars *vars);
 // File operations
 void				ft_free_strs(char **strs);
 t_map				map_dimension(char *file_name);
+
+// projection
+void    project_point(t_point *a, t_map *map);
+void    parallel_point_top(t_point *a);
+void    parallel_point_front(t_point *a);
+void    parallel_point_side(t_point *a);
+void    apply_projection(t_point **points, t_map *map);
 
 // Height processing
 int					calculate_color(int height, t_height_range *range);

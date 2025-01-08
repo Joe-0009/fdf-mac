@@ -35,23 +35,38 @@ int	close_window_esc(int keycode, t_vars *vars)
 
 int handle_movement(int keycode, t_vars *vars)
 {
+    static int total_offset_x = 0;
+    static int total_offset_y = 0;
+
     if (keycode == 126)
-        move_map(vars->points, vars->map, 0,-20);
+        total_offset_y -= 20;
     else if (keycode == 125)
-        move_map(vars->points, vars->map, 0,20);
+        total_offset_y += 20;
     else if (keycode == 123)
-        move_map(vars->points, vars->map, -20, 0);
+        total_offset_x -= 20;
     else if (keycode == 124)
-        move_map(vars->points, vars->map, 20, 0);
+        total_offset_x += 20;
     else if (keycode == 49)
-	{
+    {
+        total_offset_x = 0;
+        total_offset_y = 0;
         vars->map->scale.zoom_factor = 1.1;
+        vars->map->scale.projection = ISO;
         calculate_scale(vars->map);
         parse_map(vars->points, vars->window_name, vars->map);
         iso_points(vars);
-	}
-    if ((keycode >= 123 && keycode <= 126 )|| keycode == 49)
+    }
+    else if (keycode == 35)
     {
+        vars->map->scale.projection = (vars->map->scale.projection + 1) % 4;
+        calculate_scale(vars->map);
+        parse_map(vars->points, vars->window_name, vars->map);
+        apply_projection(vars->points, vars->map);
+    if ((keycode >= 123 && keycode <= 126) || keycode == 49 || keycode == 35)
+    {
+        vars->map->center.offset_x = total_offset_x;
+        vars->map->center.offset_y = total_offset_y;
+        move_map(vars->points, vars->map, total_offset_x, total_offset_y);
         cleanup_image(vars);
         create_image(vars);
         main_draw(vars);
@@ -59,6 +74,7 @@ int handle_movement(int keycode, t_vars *vars)
     }
     return (0);
 }
+
 int zoom_in_and_out(int keycode, t_vars *vars)
 {
     if (keycode == 6)

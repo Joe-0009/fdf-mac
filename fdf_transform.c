@@ -52,23 +52,6 @@ void	iso_point(t_point *a, t_map *map)
 	a->y = -a->z + (prev_x + prev_y) * sin(map->scale.iso_angle);
 }
 
-void	apply_iso_projection(t_point **points, t_map *map)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < map->dim.height)
-	{
-		j = 0;
-		while (j < map->dim.width)
-		{
-			iso_point(&points[i][j], map);
-			j++;
-		}
-		i++;
-	}
-}
 
 void	move_map(t_point **points, t_map *map, int new_offset_x, int new_offset_y)
 {
@@ -98,24 +81,36 @@ void	move_map(t_point **points, t_map *map, int new_offset_x, int new_offset_y)
 
 void    update_zoom(t_vars *vars, float zoom_delta)
 {
+    // Store previous offsets divided by previous zoom to get base offset
+    int base_offset_x = vars->map->center.offset_x / vars->map->scale.zoom_factor;
+    int base_offset_y = vars->map->center.offset_y / vars->map->scale.zoom_factor;
+    
+    // Update zoom factor
     vars->map->scale.zoom_factor *= zoom_delta;
     
+    // Limit zoom range
     if (vars->map->scale.zoom_factor < 0.1)
         vars->map->scale.zoom_factor = 0.1;
     if (vars->map->scale.zoom_factor > 10.0)
         vars->map->scale.zoom_factor = 10.0;
+    
+    // Calculate new offsets based on new zoom
+    vars->map->center.offset_x = base_offset_x * vars->map->scale.zoom_factor;
+    vars->map->center.offset_y = base_offset_y * vars->map->scale.zoom_factor;
+    
     calculate_scale(vars->map);
     parse_map(vars->points, vars->window_name, vars->map);
-    apply_iso_projection(vars->points, vars->map);
-    move_map(vars->points, vars->map, vars->map->center.offset_x, vars->map->center.offset_y);
+    apply_projection(vars->points, vars->map);
+    move_map(vars->points, vars->map, 0, 0);
 }
 
 void    iso_points(t_vars *vars)
 {
-    vars->map->scale.zoom_factor = 1.1;
+    if (vars->map->scale.zoom_factor == 0)
+        vars->map->scale.zoom_factor = 1.1;
     vars->map->center.offset_x = 0;
     vars->map->center.offset_y = 0;
-    apply_iso_projection(vars->points, vars->map);
+    apply_projection(vars->points, vars->map);
     move_map(vars->points, vars->map, 0, 0);
 }
 

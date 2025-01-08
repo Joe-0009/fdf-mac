@@ -12,30 +12,38 @@
 
 #include "fdf.h"
 
-int	main(int argc, char **argv)
+int main(int ac, char **av)
 {
-	t_vars	vars;
-	t_map	map;
+    t_vars  vars;
+    t_map   map;
 
-	if (argc != 2)
-	{
-		fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
-		return (1);
-	}
-	map = map_dimension(argv[1]);
-	vars.map =  &map;
-	vars.points = points_init(vars.map);
-	parse_map(vars.points, argv[1], vars.map);
-	iso_points(&vars);
-	vars.window_name = argv[1];
-	init_fdf(&vars);
-	create_image(&vars);
-	main_draw(&vars);
-	mlx_put_image_to_window(vars.mlx, vars.win, vars.img->img, 0, 0);
-	vars.dim.height = map.dim.height;
-	mlx_hooks(&vars, argv[1]);
-	mlx_loop(vars.mlx);
-	cleanup_window(&vars);
-	free_points(vars.dim.height, vars. points);
-	return (0);
+    if (ac != 2)
+        return (0);
+    map = map_dimension(av[1]);
+    vars.dim = map.dim;
+    vars.map = &map;
+    vars.points = points_init(&map);
+    if (!vars.points)
+        return (0);
+    vars.mlx = mlx_init();
+    if (!vars.mlx)
+        return (0);
+    vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "FDF");
+    if (!vars.win)
+        return (0);
+    
+    // Initialize map data
+    parse_map(vars.points, av[1], &map);
+    calculate_scale(&map);
+    apply_projection(vars.points, &map);
+    move_map(vars.points, &map, 0, 0);
+    
+    // Set up hooks and create initial image
+    mlx_hooks(&vars, av[1]);
+    create_image(&vars);
+    main_draw(&vars);
+    mlx_put_image_to_window(vars.mlx, vars.win, vars.img->img, 0, 0);
+    
+    mlx_loop(vars.mlx);
+    return (0);
 }
