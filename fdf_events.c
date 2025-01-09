@@ -62,6 +62,7 @@ int handle_movement(int keycode, t_vars *vars)
         calculate_scale(vars->map);
         parse_map(vars->points, vars->window_name, vars->map);
         apply_projection(vars->points, vars->map);
+	}
     if ((keycode >= 123 && keycode <= 126) || keycode == 49 || keycode == 35)
     {
         vars->map->center.offset_x = total_offset_x;
@@ -74,7 +75,6 @@ int handle_movement(int keycode, t_vars *vars)
     }
     return (0);
 }
-
 int zoom_in_and_out(int keycode, t_vars *vars)
 {
     if (keycode == 6)
