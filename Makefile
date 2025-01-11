@@ -11,12 +11,13 @@ SRCS = main.c \
        fdf_init.c \
        fdf_draw.c \
        fdf_line.c \
-       fdf_pixel.c \
        fdf_parallel.c \
        fdf_transform.c \
        fdf_points.c \
        fdf_utils.c \
        ft_split.c \
+       fdf_events2.c \
+       fdf_rotation.c \
        get_next_line/get_next_line.c \
        get_next_line/get_next_line_utils.c
 

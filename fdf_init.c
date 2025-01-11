@@ -6,7 +6,7 @@
 /*   By: yrachidi <yrachidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:15:07 by yrachidi          #+#    #+#             */
-/*   Updated: 2025/01/07 18:50:04 by yrachidi         ###   ########.fr       */
+/*   Updated: 2025/01/10 14:55:57 by yrachidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,17 @@ static void	cleanup_mlx(t_vars *vars)
 		vars->mlx = NULL;
 	}
 }
+
 void	cleanup_image(t_vars *vars)
 {
-	if (vars->img->img)
+	if (vars->img)
 	{
-		mlx_destroy_image(vars->mlx, vars->img->img);
-		vars->img->img = NULL;
-		vars->img->addr = NULL;
+		if (vars->img->img && vars->mlx)
+		{
+			mlx_destroy_image(vars->mlx, vars->img->img);
+			vars->img->img = NULL;
+			vars->img->addr = NULL;
+		}
 		free(vars->img);
 		vars->img = NULL;
 	}
@@ -44,18 +48,16 @@ void	cleanup_window(t_vars *vars)
 	cleanup_mlx(vars);
 }
 
-void    init_fdf(t_vars *vars)
+void	init_fdf(t_vars *vars)
 {
-    vars->map->scale.zoom_factor = 1.1;
-    vars->map->scale.projection = ISO;
-    calculate_scale(vars->map);
-    parse_map(vars->points, vars->window_name, vars->map);
-    apply_projection(vars->points, vars->map);
-    move_map(vars->points, vars->map, 0, 0);
-    cleanup_image(vars);
-    create_image(vars);
-    main_draw(vars);
-    mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
+	parse_map(vars->points, vars->window_name, vars->map);
+	calculate_scale(vars->map);
+	apply_projection(vars->points, vars->map);
+	move_map(vars->points, vars->map, 0, 0);
+	mlx_hooks(vars, vars->window_name);
+	create_image(vars);
+	main_draw(vars);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
 }
 
 void	create_image(t_vars *vars)
@@ -64,23 +66,23 @@ void	create_image(t_vars *vars)
 	if (!vars->img)
 	{
 		cleanup_window(vars);
-		free_points(vars->dim.height, vars->points);
+		free_points(vars->map->dim.height, vars->points);
 		exit(EXIT_FAILURE);
 	}
 	vars->img->img = mlx_new_image(vars->mlx, WIDTH, HEIGHT);
 	if (!vars->img->img)
 	{
 		cleanup_window(vars);
-		free_points(vars->dim.height, vars->points);
+		free_points(vars->map->dim.height, vars->points);
 		exit(EXIT_FAILURE);
 	}
-	vars->img->addr = mlx_get_data_addr(vars->img->img, &vars->img->bits_per_pixel,
-			&vars->img->line_length, &vars->img->endian);
+	vars->img->addr = mlx_get_data_addr(vars->img->img,
+			&vars->img->bits_per_pixel, &vars->img->line_length,
+			&vars->img->endian);
 	if (!vars->img->addr)
 	{
-		mlx_destroy_image(vars->mlx, vars->img->img);
 		cleanup_window(vars);
-		free_points(vars->dim.height, vars->points);
+		free_points(vars->map->dim.height, vars->points);
 		exit(EXIT_FAILURE);
 	}
 }
