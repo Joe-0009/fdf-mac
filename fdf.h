@@ -161,6 +161,7 @@ void				init_fdf(t_vars *vars);
 void				cleanup_image(t_vars *vars);
 void				cleanup_window(t_vars *vars);
 void				create_image(t_vars *vars);
+void    cleanup_all(t_vars *vars);
 
 // Map operations and scaling
 void				find_map_boundaries(t_point **points, t_map *map,

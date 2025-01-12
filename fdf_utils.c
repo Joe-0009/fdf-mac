@@ -50,15 +50,20 @@ int	ft_atoi(const char *str, t_vars *vars)
 	return (result * sign);
 }
 
-void	free_points(int map_height, t_point **points)
+void    free_points(int map_height, t_point **points)
 {
-	int	i;
+    int    i;
 
-	i = 0;
-	if (points)
-	{
-		while (i < map_height)
-			free(points[i++]);
-		free(points);
-	}
+    i = 0;
+    if (points)
+    {
+        while (i < map_height && points[i])
+        {
+            free(points[i]);
+            points[i] = NULL;
+            i++;
+        }
+        free(points);
+        points = NULL;
+    }
 }

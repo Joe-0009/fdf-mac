@@ -22,27 +22,26 @@ void	draw_new_image(t_vars *vars)
 
 int	close_window_x(t_vars *vars)
 {
-	cleanup_image(vars);
 	cleanup_window(vars);
 	free_points(vars->map->dim.height, vars->points);
 	exit(0);
 	return (0);
 }
 
-int	close_window_esc(int keycode, t_vars *vars)
+int    close_window_esc(int keycode, t_vars *vars)
 {
-	if (keycode == KEY_ESC)
-	{
-		cleanup_image(vars);
-		cleanup_window(vars);
-		free_points(vars->map->dim.height, vars->points);
-		exit(0);
-	}
-	return (0);
+    if (keycode == KEY_ESC && vars)
+    {
+        cleanup_all(vars);
+        exit(0);
+    }
+    return (0);
 }
 
 int	key_handler(int keycode, t_vars *vars)
 {
+	if (!vars)
+        return (0);
 	if (keycode == KEY_ESC)
 		close_window_esc(keycode, vars);
 	else if ((keycode >= KEY_LEFT && keycode <= KEY_UP) || keycode == 35

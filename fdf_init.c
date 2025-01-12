@@ -12,42 +12,57 @@
 
 #include "fdf.h"
 
-static void	cleanup_mlx(t_vars *vars)
+
+
+void    cleanup_image(t_vars *vars)
 {
-	if (vars->mlx)
-	{
-		mlx_destroy_window(vars->mlx, vars->win);
-		free(vars->mlx);
-		vars->mlx = NULL;
-	}
+    if (!vars || !vars->img)
+        return;
+    if (vars->img->img && vars->mlx)
+    {
+        mlx_destroy_image(vars->mlx, vars->img->img);
+        vars->img->img = NULL;
+        vars->img->addr = NULL;
+    }
+    free(vars->img);
+    vars->img = NULL;
 }
 
-void	cleanup_image(t_vars *vars)
+void    cleanup_window(t_vars *vars)
 {
-	if (vars->img)
-	{
-		if (vars->img->img && vars->mlx)
-		{
-			mlx_destroy_image(vars->mlx, vars->img->img);
-			vars->img->img = NULL;
-			vars->img->addr = NULL;
-		}
-		free(vars->img);
-		vars->img = NULL;
-	}
+    if (!vars)
+        return;
+        
+    if (vars->img)
+        cleanup_image(vars);
+    if (vars->win && vars->mlx)
+    {
+        mlx_destroy_window(vars->mlx, vars->win);
+        vars->win = NULL;
+    }
+    if (vars->mlx)
+        vars->mlx = NULL;
 }
-
-void	cleanup_window(t_vars *vars)
+void    cleanup_all(t_vars *vars)
 {
-	cleanup_image(vars);
-	if (vars->win)
-	{
-		mlx_destroy_window(vars->mlx, vars->win);
-		vars->win = NULL;
-	}
-	cleanup_mlx(vars);
+    if (!vars)
+        return;
+    if (vars->points && vars->map)
+        free_points(vars->map->dim.height, vars->points);
+    vars->points = NULL;
+    cleanup_image(vars);
+    if (vars->win && vars->mlx)
+    {
+        mlx_destroy_window(vars->mlx, vars->win);
+        vars->win = NULL;
+    }
+    if (vars->map)
+    {
+        free(vars->map);
+        vars->map = NULL;
+    }
+    vars->mlx = NULL;
 }
-
 void	init_fdf(t_vars *vars)
 {
 	parse_map(vars);

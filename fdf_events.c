@@ -80,6 +80,7 @@ int	rotate(int keycode, t_vars *vars)
 {
 	float	angle;
 
+
 	angle = 0.1;
 	if (keycode == KEY_W)
 		apply_rotation(vars, -angle, 'x');
