@@ -12,35 +12,41 @@
 
 #include "fdf.h"
 
+void	ft_error(void)
+{
+	write(2, "Error\n", 6);
+	exit(1);
+}
+
 int	ft_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
 }
 
-int	ft_atoi(const char *str)
+int	ft_atoi(const char *str, t_vars *vars)
 {
+	int		i;
+	long	result;
 	int		sign;
-	size_t	result;
 
-	sign = 1;
+	i = 0;
 	result = 0;
-	while (*str && (*str == ' ' || *str == '\t' || *str == '\n' || *str == '\v'
-			|| *str == '\f' || *str == '\r'))
-		str++;
-	if (*str == '-' || *str == '+')
+	sign = 1;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		if (*str == '-')
+		if (str[i] == '-')
 			sign = -1;
-		str++;
+		i++;
 	}
-	while (ft_isdigit(*str))
+	while (str[i])
 	{
-		
-		result = result * 10 + (*str - '0');
-		str++;
+		if (ft_isdigit(str[i]))
+			result = result * 10 + str[i++] - '0';
+		else
+			return (free_points(vars->dim.height ,vars->points), mlx_clear_window(vars->mlx, vars->img), ft_error(),1);
+		if (!(((result * sign) <= INT_MAX && (result * sign) >= INT_MIN)))
+			return (free_points(vars->dim.height , vars->points), mlx_clear_window(vars->mlx, vars->img), ft_error(),1);
 	}
-	if (result > LONG_MAX)
-		return (0 - (sign == 1));
 	return (result * sign);
 }
 

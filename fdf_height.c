@@ -12,18 +12,18 @@
 
 #include "fdf.h"
 
-static void	process_height(char *str, t_height_range *height)
+static void	process_height(char *str, t_vars *vars)
 {
 	int	current_height;
 
-	current_height = ft_atoi(str);
-	if (current_height < height->min)
-		height->min = current_height;
-	if (current_height > height->max)
-		height->max = current_height;
+	current_height = ft_atoi(str, vars);
+	if (current_height < vars->map->height.min)
+		vars->map->height.min = current_height;
+	if (current_height > vars->map->height.max)
+		vars->map->height.max = current_height;
 }
 
-void	find_height_range(char *file_name, t_map *map)
+void	find_height_range(t_vars *vars)
 {
 	int		fd;
 	char	*line;
@@ -31,9 +31,9 @@ void	find_height_range(char *file_name, t_map *map)
 	char	**color_split;
 	int		i;
 
-	map->height.min = INT_MAX;
-	map->height.max = INT_MIN;
-	fd = open_map_file(file_name);
+	vars->map->height.min = INT_MAX;
+	vars->map->height.max = INT_MIN;
+	fd = open_map_file(vars->window_name);
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -42,7 +42,7 @@ void	find_height_range(char *file_name, t_map *map)
 		while (split[++i])
 		{
 			color_split = ft_split(split[i], ',');
-			process_height(color_split[0], &map->height);
+			process_height(color_split[0], vars);
 			ft_free_strs(color_split);
 		}
 		ft_free_strs(split);

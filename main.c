@@ -35,9 +35,9 @@ int	main(int ac, char **av)
 		return (0);
 	}
 	vars.window_name = av[1];
-	map = map_dimension(vars.window_name);
+	map = map_dimension(&vars);
 	vars.map = &map;
-	vars.points = points_init(&map);
+	points_init(&vars);
 	if (!vars.points)
 		return (0);
 	vars.mlx = mlx_init();

@@ -50,7 +50,7 @@ void	cleanup_window(t_vars *vars)
 
 void	init_fdf(t_vars *vars)
 {
-	parse_map(vars->points, vars->window_name, vars->map);
+	parse_map(vars);
 	calculate_scale(vars->map);
 	apply_projection(vars->points, vars->map);
 	move_map(vars->points, vars->map, 0, 0);

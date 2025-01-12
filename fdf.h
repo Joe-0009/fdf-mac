@@ -151,8 +151,9 @@ typedef struct s_vars
 ** Function prototypes
 */
 // Point operations
-t_point				**points_init(t_map *map);
-void				parse_map(t_point **points, char *file_name, t_map *map);
+void	ft_error(void);
+void points_init(t_vars *vars);
+ void    parse_map(t_vars *vars);
 void				free_points(int map_height, t_point **points);
 
 // Core initialization and cleanup
@@ -166,8 +167,8 @@ void				find_map_boundaries(t_point **points, t_map *map,
 						t_bounds *bounds);
 int					open_map_file(char *file_name);
 void				calculate_scale(t_map *map);
-void				find_height_range(char *file_name, t_map *map);
-t_map				map_dimension(char *file_name);
+void	find_height_range(t_vars *vars);
+t_map				map_dimension(t_vars *vars);
 
 // Transformations and movement
 void				move_map(t_point **points, t_map *map, int new_offset_x,
@@ -199,7 +200,7 @@ int					rotate(int keycode, t_vars *vars);
 // Utility functions
 int					ft_words_count(char const *s, char c);
 char				**ft_split(char const *s, char c);
-int					ft_atoi(const char *str);
+int					ft_atoi(const char *str, t_vars *vars);
 void				ft_free_strs(char **strs);
 
 #endif

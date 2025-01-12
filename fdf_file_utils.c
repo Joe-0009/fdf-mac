@@ -18,7 +18,7 @@ int	open_map_file(char *file_name)
 
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
-		exit(0);
+		ft_error();
 	return (fd);
 }
 
@@ -39,7 +39,7 @@ static void	map_init(t_map *map)
 	map->height.max = INT_MIN;
 }
 
-t_map	map_dimension(char *file_name)
+t_map	map_dimension(t_vars *vars)
 {
 	t_map	map;
 	int		fd;
@@ -50,7 +50,7 @@ t_map	map_dimension(char *file_name)
 	width = INT_MIN;
 	map_init(&map);
 	height = 0;
-	fd = open_map_file(file_name);
+	fd = open_map_file(vars->window_name);
 	line = get_next_line(fd);
 	while (line)
 	{

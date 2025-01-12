@@ -21,7 +21,7 @@ void	reset_shape(int keycode, t_vars *vars)
 		vars->map->scale.zoom_factor = 1.1;
 		vars->map->scale.projection = ISO;
 		calculate_scale(vars->map);
-		parse_map(vars->points, vars->window_name, vars->map);
+		parse_map(vars);
 		iso_points(vars);
 	}
 }
@@ -30,7 +30,7 @@ void	change_projection(t_vars *vars)
 {
 	vars->map->scale.projection = (vars->map->scale.projection + 1) % 4;
 	calculate_scale(vars->map);
-	parse_map(vars->points, vars->window_name, vars->map);
+	parse_map(vars);
 	apply_projection(vars->points, vars->map);
 }
 

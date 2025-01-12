@@ -84,7 +84,7 @@ void	update_zoom(t_vars *vars, float zoom_delta)
 	vars->map->center.offset_x = base_offset_x * vars->map->scale.zoom_factor;
 	vars->map->center.offset_y = base_offset_y * vars->map->scale.zoom_factor;
 	calculate_scale(vars->map);
-	parse_map(vars->points, vars->window_name, vars->map);
+	parse_map(vars);
 	apply_projection(vars->points, vars->map);
 	move_map(vars->points, vars->map, 0, 0);
 }
