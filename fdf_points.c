@@ -70,6 +70,7 @@ void	parse_map(t_vars *vars)
 	char			*line;
 	t_map_context	context;
 
+	
 	find_height_range(vars);
 	calculate_scale(vars->map);
 	context.map = vars->map;

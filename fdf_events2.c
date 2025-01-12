@@ -54,7 +54,6 @@ int	key_handler(int keycode, t_vars *vars)
 		|| keycode == KEY_D || keycode == KEY_Q || keycode == KEY_E
 		|| keycode == KEY_I)
 		rotate(keycode, vars);
-	printf("%d\n", keycode);
 	return (0);
 }
 

@@ -38,7 +38,7 @@ int	ft_atoi(const char *str, t_vars *vars)
 			sign = -1;
 		i++;
 	}
-	while (str[i])
+	while (str[i] && str[i] != '\n')
 	{
 		if (ft_isdigit(str[i]))
 			result = result * 10 + str[i++] - '0';
