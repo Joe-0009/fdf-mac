@@ -91,5 +91,4 @@ void	calculate_scale(t_map *map)
 		map->scale.base = scale_y;
 	map->scale.base *= 1.1;
 	map->scale.z_scale = map->scale.base * height_factor;
-	map->scale.iso_angle = 0.523599;
 }
