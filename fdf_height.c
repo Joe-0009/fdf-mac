@@ -16,6 +16,8 @@ static void	process_height(char *str, t_vars *vars)
 {
 	int	current_height;
 
+	if (!str)
+		ft_error();
 	current_height = ft_atoi(str, vars);
 	if (current_height < vars->map->height.min)
 		vars->map->height.min = current_height;
