@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void	*ft_memset(void *b, int c, size_t len)
+static void	*ft_memset(void *b, int c, size_t len)
 {
 	unsigned char	*p;
 
@@ -31,9 +31,7 @@ int	main(int ac, char **av)
 	t_map	map;
 
 	if (ac != 2)
-	{
-		return (0);
-	}
+		ft_error();
 	vars.window_name = av[1];
 	map = map_dimension(&vars);
 	vars.map = &map;

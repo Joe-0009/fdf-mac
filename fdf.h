@@ -202,5 +202,6 @@ int					ft_words_count(char const *s, char c);
 char				**ft_split(char const *s, char c);
 int					ft_atoi(const char *str, t_vars *vars);
 void				ft_free_strs(char **strs);
+int	ft_atoi_base(char *str, int base);
 
 #endif

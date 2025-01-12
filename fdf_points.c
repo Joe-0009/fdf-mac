@@ -33,7 +33,7 @@ static void	create_point(t_point *point, t_vars *vars, char **color_split,
 	point->y = context->i * context->map->scale.base;
 	point->z = height * context->map->scale.z_scale;
 	if (color_split[1])
-		point->color = (int)strtol(color_split[1], NULL, 16);
+		point->color = ft_atoi_base(color_split[1] + 2, 16);
 	else
 		point->color = calculate_color(height, &context->map->height, 0x0000FF);
 }
@@ -44,6 +44,8 @@ static void	parse_line(char *line, t_point **points, t_vars *vars, t_map_context
 	char	**color_split;
 	int		j;
 
+	if (!points)
+    	ft_error(); 
 	j = -1;
 	split = ft_split(line, ' ');
 	if (!split)
