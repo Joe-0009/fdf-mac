@@ -12,12 +12,12 @@
 
 #include "fdf.h"
 
-int	calculate_color(int height, t_height_range *range)
+int	calculate_color(int height, t_height_range *range, int color)
 {
 	float	height_percent;
 
 	if (height == 0)
-		return (0x0000FF);
+		return (color);
 	height_percent = (float)(height - range->min) / (range->max - range->min
 			+ 0.1);
 	return (0xFFFFFF - (int)(height_percent * 0x00FFFF));
@@ -35,7 +35,7 @@ static void	create_point(t_point *point, char **color_split,
 	if (color_split[1])
 		point->color = (int)strtol(color_split[1], NULL, 16);
 	else
-		point->color = calculate_color(height, &context->map->height);
+		point->color = calculate_color(height, &context->map->height, 0x0000FF);
 }
 
 static void	parse_line(char *line, t_point **points, t_map_context *context)

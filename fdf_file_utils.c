@@ -45,15 +45,18 @@ t_map	map_dimension(char *file_name)
 	int		fd;
 	char	*line;
 	int		height;
+	int 	width;
 
+	width = INT_MIN;
 	map_init(&map);
 	height = 0;
 	fd = open_map_file(file_name);
 	line = get_next_line(fd);
 	while (line)
 	{
-		if (height == 0)
-			map.dim.width = ft_words_count(line, ' ');
+		width = ft_words_count(line, ' ');
+		if (width > map.dim.width)
+			map.dim.width = width;
 		height++;
 		free(line);
 		line = get_next_line(fd);
