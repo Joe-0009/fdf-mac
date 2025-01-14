@@ -19,7 +19,7 @@ int	ft_words_count(char const *s, char c)
 
 	count = 0;
 	word = 0;
-	while (*s)
+	while (*s && *s != '\n')
 	{
 		if (*s != c && !word)
 		{
@@ -42,7 +42,7 @@ char	*ft_str_s_dup(char const *s, char c, int *start)
 	int		i;
 
 	end = 0;
-	while (s[*start + end] && s[*start + end] != c)
+	while (s[*start + end] && s[*start + end] != c && s[*start + end] != '\n')
 		end++;
 	dup = (char *)calloc(end + 1, 1);
 	if (!dup)
@@ -85,7 +85,7 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (s[i])
+	while (s[i] && s[i] != '\n')
 	{
 		if (s[i] == c && s[i++])
 			continue ;

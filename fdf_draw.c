@@ -38,23 +38,23 @@ int	interpolate_color(int color1, int color2, float fraction)
 	return ((red << 16) | (green << 8) | blue);
 }
 
-static void	draw_horizontal_lines(t_vars *vars)
-{
-	int	i;
-	int	j;
+// static void	draw_horizontal_lines(t_vars *vars)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	while (i < vars->map->dim.height)
-	{
-		j = 0;
-		while (j < vars->map->dim.width - 1)
-		{
-			draw_line(vars, vars->points[i][j], vars->points[i][j + 1]);
-			j++;
-		}
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < vars->map->dim.height)
+// 	{
+// 		j = 0;
+// 		while (j < vars->map->dim.width - 1)
+// 		{
+// 			draw_line(vars, vars->points[i][j], vars->points[i][j + 1]);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
 static void	draw_vertical_lines(t_vars *vars)
 {
@@ -76,6 +76,6 @@ static void	draw_vertical_lines(t_vars *vars)
 
 void	main_draw(t_vars *vars)
 {
-	draw_horizontal_lines(vars);
+	//draw_horizontal_lines(vars);
 	draw_vertical_lines(vars);
 }
