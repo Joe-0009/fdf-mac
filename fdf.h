@@ -175,14 +175,15 @@ t_map				map_dimension(t_vars *vars);
 void				move_map(t_point **points, t_map *map, int new_offset_x,
 						int new_offset_y);
 void				update_zoom(t_vars *vars, float zoom_factor);
-void				iso_point(t_point *a, float angle);
+void	iso_point(t_point *a, float angle);
 void				iso_points(t_vars *vars);
+void				iso_point2(t_vars *vars);
 
 // Rotation
 void				apply_rotation(t_vars *vars, float angle, char axis);
 
 // Parallel
-void				apply_projection(t_point **points, t_map *map);
+void				apply_projection(t_vars *vars);
 
 // Drawing operations
 int					interpolate_color(int color1, int color2, float fraction);

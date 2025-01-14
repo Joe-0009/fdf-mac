@@ -66,7 +66,7 @@ void    cleanup_all(t_vars *vars)
 void	init_fdf(t_vars *vars)
 {
 	parse_map(vars);
-	apply_projection(vars->points, vars->map);
+	iso_point2(vars);
 	move_map(vars->points, vars->map, 0, 0);
 	mlx_hooks(vars, vars->window_name);
 	create_image(vars);

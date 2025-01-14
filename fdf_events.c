@@ -19,10 +19,9 @@ void	reset_shape(int keycode, t_vars *vars)
 		vars->map->center.offset_x = 0;
 		vars->map->center.offset_y = 0;
 		vars->map->scale.zoom_factor = 1.1;
-		vars->map->scale.projection = ISO;
 		calculate_scale(vars->map);
 		parse_map(vars);
-		iso_points(vars);
+		iso_point2(vars);
 	}
 }
 
@@ -31,7 +30,7 @@ void	change_projection(t_vars *vars)
 	vars->map->scale.projection = (vars->map->scale.projection + 1) % 4;
 	calculate_scale(vars->map);
 	parse_map(vars);
-	apply_projection(vars->points, vars->map);
+	apply_projection(vars);
 }
 
 int	handle_movement(int keycode, t_vars *vars)
